@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
+from django.contrib.auth import get_user_model
 
 
 class User(AbstractBaseUser):
@@ -63,9 +64,40 @@ class Student(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class Test(models.Model):
-	instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
-	assigned_students = models.ManyToManyField(Student)
-	#start_time = models.DateTimeField()
-	#end_time = models.DateTimeField()
+class AnswerOption(models.Model):
+	text = models.CharField(max_length=255)
+
+	def __str__(self):
+		return self.text
+
+
+class Question(models.Model):
+	text = models.TextField()
+	option1 = models.CharField(max_length=255)
+	option2 = models.CharField(max_length=255)
+	option3 = models.CharField(max_length=255)
+	option4 = models.CharField(max_length=255)
+	correct_answers = models.ManyToManyField(AnswerOption)
+
+
+class ExamSubmission(models.Model):
+	student = models.ForeignKey(User, on_delete=models.CASCADE)
+	question = models.ForeignKey('Question', on_delete=models.CASCADE)
+	selected_answers = models.ManyToManyField('AnswerOption')
+
+	def evaluate_submission(self):
+		# Get the correct answers for the question
+		correct_answers = self.question.correct_answers.all()
+
+		# Compare the selected answers with the correct answers
+		is_correct = set(self.selected_answers.all()) == set(correct_answers)
+
+		return is_correct
+
+
+
+
+
+
+
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Question, AnswerOption
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -42,3 +42,21 @@ class UserRegistrationForm(forms.Form):
 	role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
 	phone_number = forms.CharField(max_length=11, widget=forms.TextInput(attrs={'class': 'form-control'}))
 	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class QuestionForm(forms.ModelForm):
+	class Meta:
+		model = Question
+		fields = ['text', 'option1', 'option2', 'option3', 'option4', 'correct_answers']
+
+	correct_answers = forms.ModelMultipleChoiceField(
+		queryset=Question.objects.none(),
+		widget=forms.CheckboxSelectMultiple,
+		required=False)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['correct_answers'].queryset = AnswerOption.objects.filter(question=self.instance)
+
+
+
