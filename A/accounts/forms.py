@@ -35,11 +35,9 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserRegistrationForm(forms.Form):
-	ROLE_CHOICES = [('Student', 'Student'), ('Instructor', 'Instructor')]
 
 	email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
 	full_name = forms.CharField(label='full name', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
 	phone_number = forms.CharField(max_length=11, widget=forms.TextInput(attrs={'class': 'form-control'}))
 	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
@@ -59,4 +57,6 @@ class QuestionForm(forms.ModelForm):
 		self.fields['correct_answers'].queryset = AnswerOption.objects.filter(question=self.instance)
 
 
-
+class UserLoginForm(forms.Form):
+	phone_number = forms.CharField(max_length=11, widget=forms.TextInput(attrs={'class': 'form-control'}))
+	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
