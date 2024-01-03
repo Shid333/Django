@@ -94,10 +94,3 @@ class ExamSubmission(models.Model):
 
 		return is_correct
 
-
-
-
-
-
-
-
