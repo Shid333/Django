@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Create Exam Questions</h2>
+  <p>Exam: {{ exam_details.name }} ({{ exam_details.duration }})</p>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ question_form.as_p }}
+
+    <!-- Display options fields -->
+
+
+    <!-- Add more questions or finish -->
+    <button type="submit" name="add_more">Add Another Question</button>
+    <button type="submit" name="finish">Finish and Create Exam</button>
+  </form>
+{% endblock %}

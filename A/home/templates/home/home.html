@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>to see all the exams</h2>
+    <p>User Role: {{ user_role }}</p>
+    <body>
+        <a href="{% url 'exams:create_exams' %}">show all the exams</a>
+    </body>
+{% endblock %}
